@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Table</title>
+  <title>Part 2 - Data Table</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: 0 auto; }
     .controls { margin-bottom: 15px; display: flex; gap: 10px; align-items: center; }
@@ -12,6 +12,7 @@
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
     th { background-color: #f4f4f4; }
+    .nav-link { display: block; text-align: center; margin-top: 20px; text-decoration: none; color: #007bff; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -35,8 +36,10 @@
     <tbody id="tableBody"></tbody>
   </table>
 
+  <!-- رابط للعودة للنموذج -->
+  <a href="index.html" class="nav-link">&larr; Back to Part 1: Registration Form</a>
+
   <script>
-    // Sample Data Array with English names
     const data = [
       { name: "Emily Watson", age: 28, city: "London" },
       { name: "James Miller", age: 34, city: "Chicago" },
@@ -47,7 +50,6 @@
 
     let currentData = [...data];
 
-    // Render Table Rows
     function renderTable(items) {
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
@@ -68,7 +70,6 @@
       });
     }
 
-    // Live Search Filter
     document.getElementById('searchInput').addEventListener('input', function(e) {
       const query = e.target.value.toLowerCase();
       currentData = data.filter(item => 
@@ -78,7 +79,6 @@
       renderTable(currentData);
     });
 
-    // Sort by Name
     let nameAsc = true;
     document.getElementById('sortNameBtn').addEventListener('click', function() {
       currentData.sort((a, b) => nameAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
@@ -86,7 +86,6 @@
       renderTable(currentData);
     });
 
-    // Sort by Age
     let ageAsc = true;
     document.getElementById('sortAgeBtn').addEventListener('click', function() {
       currentData.sort((a, b) => ageAsc ? a.age - b.age : b.age - a.age);
@@ -94,7 +93,6 @@
       renderTable(currentData);
     });
 
-    // Initial Render
     renderTable(currentData);
   </script>
 </body>
