@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Table</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: 0 auto; }
+    .controls { margin-bottom: 15px; display: flex; gap: 10px; align-items: center; }
+    input[type="text"] { padding: 8px; flex: 1; }
+    button { padding: 8px 12px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+
+  <h2>User Directory</h2>
+
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search by name or city...">
+    <button id="sortNameBtn">Sort by Name</button>
+    <button id="sortAgeBtn">Sort by Age</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>City</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    // Sample Data Array with English names
+    const data = [
+      { name: "Emily Watson", age: 28, city: "London" },
+      { name: "James Miller", age: 34, city: "Chicago" },
+      { name: "Sophia Martinez", age: 22, city: "Madrid" },
+      { name: "Alexander Wright", age: 41, city: "Toronto" },
+      { name: "Olivia Johnson", age: 26, city: "New York" }
+    ];
+
+    let currentData = [...data];
+
+    // Render Table Rows
+    function renderTable(items) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3">No results found</td></tr>';
+        return;
+      }
+
+      items.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.name}</td>
+          <td>${item.age}</td>
+          <td>${item.city}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Live Search Filter
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+      const query = e.target.value.toLowerCase();
+      currentData = data.filter(item => 
+        item.name.toLowerCase().includes(query) || 
+        item.city.toLowerCase().includes(query)
+      );
+      renderTable(currentData);
+    });
+
+    // Sort by Name
+    let nameAsc = true;
+    document.getElementById('sortNameBtn').addEventListener('click', function() {
+      currentData.sort((a, b) => nameAsc ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name));
+      nameAsc = !nameAsc;
+      renderTable(currentData);
+    });
+
+    // Sort by Age
+    let ageAsc = true;
+    document.getElementById('sortAgeBtn').addEventListener('click', function() {
+      currentData.sort((a, b) => ageAsc ? a.age - b.age : b.age - a.age);
+      ageAsc = !ageAsc;
+      renderTable(currentData);
+    });
+
+    // Initial Render
+    renderTable(currentData);
+  </script>
+</body>
+</html>
